@@ -5,7 +5,7 @@ import io
 import base64
 
 # ==========================================
-# 1. 页面与全局美化配置 (Liquid Glass 学习风)
+# 1. 页面与全局美化配置 (米色纸质学习风)
 # ==========================================
 st.set_page_config(page_title="纯净听写记录仪 Pro", page_icon="🎙️", layout="centered")
 
@@ -16,7 +16,7 @@ st.markdown("""
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
     
     .stApp {
-        background: linear-gradient(135deg, #e0f2fe 0%, #dcfce7 50%, #f0e9ff 100%);
+        background: #fefce8;
         font-family: 'Noto Sans SC', sans-serif;
     }
     
@@ -25,31 +25,27 @@ st.markdown("""
         text-align: center;
         font-weight: 700;
         font-size: 2.2rem;
-        background: linear-gradient(90deg, #2563eb, #059669);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        color: #451a03;
         margin-bottom: 0.2rem;
         letter-spacing: -0.5px;
     }
     
     .subtitle {
         text-align: center;
-        color: #64748b;
+        color: #78350f;
         font-size: 14px;
         font-weight: 400;
         margin-bottom: 2rem;
     }
     
-    /* 毛玻璃卡片基础 */
+    /* 实色卡片基础 - 移除毛玻璃 */
     .glass-card {
-        background: rgba(255, 255, 255, 0.65);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.5);
-        border-radius: 20px;
+        background: #ffffff;
+        border: 1px solid #fde68a;
+        border-radius: 16px;
         padding: 24px;
         margin-bottom: 16px;
-        box-shadow: 0 8px 32px rgba(31, 38, 135, 0.07);
+        box-shadow: 0 2px 8px rgba(120, 53, 15, 0.08);
         animation: slideUp 0.5s ease-out;
     }
     
@@ -69,20 +65,18 @@ st.markdown("""
         to { opacity: 1; }
     }
     
-    /* 音频播放器区域 */
+    /* 音频播放器区域 - 实色 */
     .audio-area {
-        background: rgba(255, 255, 255, 0.5);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.4);
-        border-radius: 16px;
+        background: #fffbeb;
+        border: 1px solid #fcd34d;
+        border-radius: 12px;
         padding: 20px;
         margin-bottom: 16px;
         text-align: center;
     }
     
     .audio-label {
-        color: #475569;
+        color: #78350f;
         font-size: 13px;
         font-weight: 500;
         margin-bottom: 12px;
@@ -94,38 +88,37 @@ st.markdown("""
     
     audio {
         width: 100%;
-        border-radius: 10px;
+        border-radius: 8px;
         margin-top: 8px;
     }
     
     audio::-webkit-media-controls-panel {
-        background: rgba(255, 255, 255, 0.8);
-        border-radius: 10px;
+        background: #ffffff;
+        border-radius: 8px;
     }
     
-    /* 单词信息卡片 */
+    /* 单词信息卡片 - 实色 */
     .word-info {
-        background: rgba(255, 255, 255, 0.5);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.4);
-        border-radius: 16px;
-        padding: 20px;
+        background: #ffffff;
+        border: 2px solid #d97706;
+        border-radius: 12px;
+        padding: 24px;
         margin-bottom: 16px;
         text-align: center;
+        box-shadow: 0 2px 8px rgba(120, 53, 15, 0.06);
     }
     
     .word-display {
         font-size: 2rem;
         font-weight: 700;
-        color: #1e293b;
+        color: #451a03;
         margin-bottom: 8px;
         letter-spacing: 1px;
     }
     
     .meaning-display {
         font-size: 1.1rem;
-        color: #64748b;
+        color: #78350f;
         font-weight: 400;
     }
     
@@ -136,114 +129,110 @@ st.markdown("""
         margin-bottom: 16px;
     }
     
-    /* 表单区域 */
+    /* 表单区域 - 实色 */
     .form-area {
-        background: rgba(255, 255, 255, 0.65);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.5);
-        border-radius: 20px;
+        background: #ffffff;
+        border: 1px solid #fde68a;
+        border-radius: 16px;
         padding: 24px;
-        box-shadow: 0 8px 32px rgba(31, 38, 135, 0.07);
+        box-shadow: 0 2px 8px rgba(120, 53, 15, 0.06);
     }
     
-    /* 输入框美化 */
+    /* 输入框美化 - 高对比 */
     [data-testid="stTextInput"] input {
-        border-radius: 12px !important;
-        border: 1.5px solid rgba(203, 213, 225, 0.6) !important;
-        background: rgba(255, 255, 255, 0.8) !important;
+        border-radius: 10px !important;
+        border: 2px solid #d4d4d8 !important;
+        background: #ffffff !important;
         padding: 12px 16px !important;
         font-size: 15px !important;
+        color: #451a03 !important;
         transition: all 0.3s ease !important;
     }
     
     [data-testid="stTextInput"] input:focus {
-        border-color: #3b82f6 !important;
-        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15) !important;
+        border-color: #d97706 !important;
+        box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.15) !important;
         outline: none !important;
+    }
+    
+    [data-testid="stTextInput"] input::placeholder {
+        color: #a1a1aa !important;
     }
     
     /* 按钮美化 */
     .stButton > button {
-        border-radius: 12px !important;
+        border-radius: 10px !important;
         font-weight: 600 !important;
         padding: 10px 20px !important;
-        transition: all 0.3s ease !important;
+        transition: all 0.2s ease !important;
         border: none !important;
     }
     
     .stButton > button:hover {
-        transform: translateY(-2px) scale(1.02);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(120, 53, 15, 0.15);
     }
     
     .stButton > button:active {
-        transform: translateY(0) scale(0.98);
+        transform: translateY(0);
     }
     
-    /* 主要按钮 */
+    /* 主要按钮 - 琥珀实色 */
     [data-testid="stFormSubmitButton"] > button {
-        background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
-        color: white !important;
-        border-radius: 12px !important;
+        background: #d97706 !important;
+        color: #ffffff !important;
+        border-radius: 10px !important;
         font-weight: 600 !important;
         padding: 12px 24px !important;
-        transition: all 0.3s ease !important;
+        transition: all 0.2s ease !important;
         border: none !important;
-        box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
+        box-shadow: 0 2px 6px rgba(217, 119, 6, 0.25);
     }
     
     [data-testid="stFormSubmitButton"] > button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        background: #b45309 !important;
+        box-shadow: 0 4px 10px rgba(217, 119, 6, 0.35);
     }
     
-    /* 警告/回退按钮 */
+    /* 回退按钮 - 深褐实色 */
     .btn-back > button {
-        background: linear-gradient(135deg, #f59e0b, #d97706) !important;
-        color: white !important;
-        box-shadow: 0 4px 14px rgba(245, 158, 11, 0.3);
+        background: #78350f !important;
+        color: #ffffff !important;
+        box-shadow: 0 2px 6px rgba(120, 53, 15, 0.2);
     }
     
     .btn-back > button:hover {
-        box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+        background: #451a03 !important;
+        box-shadow: 0 4px 10px rgba(120, 53, 15, 0.3);
     }
     
-    /* 重播按钮 */
+    /* 重播按钮 - 青绿实色 */
     .btn-replay > button {
-        background: linear-gradient(135deg, #10b981, #059669) !important;
-        color: white !important;
-        box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+        background: #059669 !important;
+        color: #ffffff !important;
+        box-shadow: 0 2px 6px rgba(5, 150, 105, 0.2);
     }
     
     .btn-replay > button:hover {
-        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+        background: #047857 !important;
+        box-shadow: 0 4px 10px rgba(5, 150, 105, 0.3);
     }
     
-    /* 进度条 */
+    /* 进度条 - 琥珀色 */
     .stProgress > div > div {
-        background: linear-gradient(90deg, #3b82f6, #10b981, #3b82f6);
-        background-size: 200% 100%;
-        animation: shimmer 2s infinite;
-        border-radius: 10px;
+        background: #d97706;
+        border-radius: 8px;
     }
     
-    @keyframes shimmer {
-        0% { background-position: 200% 0; }
-        100% { background-position: -200% 0; }
-    }
-    
-    /* 状态提示条 */
+    /* 状态提示条 - 实色 */
     .review-banner {
-        background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(245, 158, 11, 0.05));
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(245, 158, 11, 0.3);
-        border-radius: 12px;
+        background: #fffbeb;
+        border: 2px solid #d97706;
+        border-radius: 10px;
         padding: 12px 20px;
         margin-bottom: 16px;
-        color: #92400e;
-        font-weight: 500;
+        color: #78350f;
+        font-weight: 600;
         font-size: 14px;
         text-align: center;
         animation: fadeIn 0.4s ease-out;
@@ -255,34 +244,37 @@ st.markdown("""
     }
     
     .stTabs [data-baseweb="tab"] {
-        border-radius: 10px 10px 0 0;
+        border-radius: 8px 8px 0 0;
         padding: 10px 20px;
         font-weight: 500;
-        background: rgba(255, 255, 255, 0.4);
-        border: 1px solid rgba(255, 255, 255, 0.3);
+        background: #fef3c7;
+        border: 1px solid #fde68a;
         border-bottom: none;
+        color: #78350f;
     }
     
     .stTabs [aria-selected="true"] {
-        background: rgba(255, 255, 255, 0.8) !important;
-        color: #2563eb !important;
+        background: #ffffff !important;
+        color: #d97706 !important;
         font-weight: 600 !important;
     }
     
     /* 表格美化 */
     .stDataFrame {
-        border-radius: 16px;
+        border-radius: 12px;
         overflow: hidden;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 2px 8px rgba(120, 53, 15, 0.08);
     }
     
     /* Metric 卡片 */
     [data-testid="stMetricValue"] {
         font-size: 2rem;
         font-weight: 700;
-        background: linear-gradient(135deg, #2563eb, #059669);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        color: #d97706;
+    }
+    
+    [data-testid="stMetricLabel"] {
+        color: #78350f !important;
     }
     
     /* 全局容器 */
@@ -296,40 +288,57 @@ st.markdown("""
     hr {
         border: none;
         height: 1px;
-        background: linear-gradient(90deg, transparent, rgba(148, 163, 184, 0.4), transparent);
+        background: #fde68a;
         margin: 24px 0;
     }
     
-    /* 成功消息 */
+    /* 成功消息 - 实色 */
     .stSuccess {
-        background: rgba(16, 185, 129, 0.1) !important;
-        border: 1px solid rgba(16, 185, 129, 0.2) !important;
-        border-radius: 16px !important;
-        backdrop-filter: blur(12px);
+        background: #ecfdf5 !important;
+        border: 1px solid #6ee7b7 !important;
+        border-radius: 12px !important;
+        color: #065f46 !important;
     }
     
-    /* 信息提示 */
+    /* 信息提示 - 实色 */
     .stInfo {
-        background: rgba(59, 130, 246, 0.1) !important;
-        border: 1px solid rgba(59, 130, 246, 0.2) !important;
-        border-radius: 12px !important;
-        backdrop-filter: blur(12px);
+        background: #eff6ff !important;
+        border: 1px solid #93c5fd !important;
+        border-radius: 10px !important;
+        color: #1e40af !important;
     }
     
-    /* 警告提示 */
+    /* 警告提示 - 实色 */
     .stWarning {
-        background: rgba(245, 158, 11, 0.1) !important;
-        border: 1px solid rgba(245, 158, 11, 0.2) !important;
-        border-radius: 12px !important;
-        backdrop-filter: blur(12px);
+        background: #fffbeb !important;
+        border: 1px solid #fcd34d !important;
+        border-radius: 10px !important;
+        color: #92400e !important;
     }
     
-    /* 错误提示 */
+    /* 错误提示 - 实色 */
     .stError {
-        background: rgba(239, 68, 68, 0.1) !important;
-        border: 1px solid rgba(239, 68, 68, 0.2) !important;
-        border-radius: 12px !important;
-        backdrop-filter: blur(12px);
+        background: #fef2f2 !important;
+        border: 1px solid #fca5a5 !important;
+        border-radius: 10px !important;
+        color: #991b1b !important;
+    }
+    
+    /* 标签和辅助文字 */
+    label, .stMarkdown p {
+        color: #451a03 !important;
+    }
+    
+    /* 表格表头 */
+    .stDataFrame th {
+        background: #fffbeb !important;
+        color: #78350f !important;
+        font-weight: 600 !important;
+    }
+    
+    /* 表格单元格 */
+    .stDataFrame td {
+        color: #451a03 !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -613,3 +622,4 @@ else:
             reset_session()
     
     st.markdown("</div>", unsafe_allow_html=True)
+
