@@ -1,3 +1,4 @@
+
 import streamlit as st
 import pandas as pd
 from gtts import gTTS
@@ -5,7 +6,7 @@ import io
 import base64
 
 # ==========================================
-# 1. 页面与全局美化配置 (青绿专注风)
+# 1. 页面与全局美化配置 (清爽学习风)
 # ==========================================
 st.set_page_config(page_title="纯净听写记录仪 Pro", page_icon="🎙️", layout="centered")
 
@@ -16,7 +17,7 @@ st.markdown("""
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
     
     .stApp {
-        background: #F0FDFA;
+        background: #F8FAFC;
         font-family: 'Noto Sans SC', sans-serif;
     }
     
@@ -25,14 +26,14 @@ st.markdown("""
         text-align: center;
         font-weight: 700;
         font-size: 2.2rem;
-        color: #134E4A;
+        color: #1F2937;
         margin-bottom: 0.2rem;
         letter-spacing: -0.5px;
     }
     
     .subtitle {
         text-align: center;
-        color: #0F766E;
+        color: #475569;
         font-size: 14px;
         font-weight: 400;
         margin-bottom: 2rem;
@@ -41,11 +42,11 @@ st.markdown("""
     /* 实色卡片基础 */
     .glass-card {
         background: #ffffff;
-        border: 1px solid #CCFBF1;
+        border: 1px solid #D7DEE8;
         border-radius: 16px;
         padding: 24px;
         margin-bottom: 16px;
-        box-shadow: 0 2px 8px rgba(13, 148, 136, 0.08);
+        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
         animation: slideUp 0.5s ease-out;
     }
     
@@ -68,7 +69,7 @@ st.markdown("""
     /* 音频播放器区域 */
     .audio-area {
         background: #ffffff;
-        border: 2px solid #99F6E4;
+        border: 2px solid #BFDBFE;
         border-radius: 12px;
         padding: 20px;
         margin-bottom: 16px;
@@ -76,7 +77,7 @@ st.markdown("""
     }
     
     .audio-label {
-        color: #0F766E;
+        color: #2563EB;
         font-size: 13px;
         font-weight: 500;
         margin-bottom: 12px;
@@ -99,26 +100,26 @@ st.markdown("""
     
     /* 单词信息卡片 */
     .word-info {
-        background: #ffffff;
-        border: 2px solid #0D9488;
+        background: #EFF6FF;
+        border: 2px dashed #93C5FD;
         border-radius: 12px;
         padding: 24px;
         margin-bottom: 16px;
         text-align: center;
-        box-shadow: 0 2px 8px rgba(13, 148, 136, 0.06);
+        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.08);
     }
     
     .word-display {
-        font-size: 2rem;
+        font-size: 1.35rem;
         font-weight: 700;
-        color: #134E4A;
+        color: #1D4ED8;
         margin-bottom: 8px;
-        letter-spacing: 1px;
+        letter-spacing: 0;
     }
     
     .meaning-display {
-        font-size: 1.1rem;
-        color: #0F766E;
+        font-size: 0.95rem;
+        color: #475569;
         font-weight: 400;
     }
     
@@ -132,31 +133,31 @@ st.markdown("""
     /* 表单区域 */
     .form-area {
         background: #ffffff;
-        border: 1px solid #CCFBF1;
+        border: 1px solid #D7DEE8;
         border-radius: 16px;
         padding: 24px;
-        box-shadow: 0 2px 8px rgba(13, 148, 136, 0.06);
+        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
     }
     
     /* 输入框美化 */
     [data-testid="stTextInput"] input {
         border-radius: 10px !important;
-        border: 2px solid #99F6E4 !important;
+        border: 2px solid #BFDBFE !important;
         background: #ffffff !important;
         padding: 12px 16px !important;
         font-size: 15px !important;
-        color: #134E4A !important;
+        color: #1F2937 !important;
         transition: all 0.3s ease !important;
     }
     
     [data-testid="stTextInput"] input:focus {
-        border-color: #0D9488 !important;
-        box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15) !important;
+        border-color: #2563EB !important;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.16) !important;
         outline: none !important;
     }
     
     [data-testid="stTextInput"] input::placeholder {
-        color: #5EEAD4 !important;
+        color: #94A3B8 !important;
     }
     
     /* 按钮美化 */
@@ -170,64 +171,64 @@ st.markdown("""
     
     .stButton > button:hover {
         transform: translateY(-1px);
-        box-shadow: 0 4px 8px rgba(13, 148, 136, 0.15);
+        box-shadow: 0 4px 10px rgba(15, 23, 42, 0.14);
     }
     
     .stButton > button:active {
         transform: translateY(0);
     }
     
-    /* 主要按钮 - 青绿 */
+    /* 主要按钮 */
     [data-testid="stFormSubmitButton"] > button {
-        background: #0D9488 !important;
+        background: #2563EB !important;
         color: #ffffff !important;
         border-radius: 10px !important;
         font-weight: 600 !important;
         padding: 12px 24px !important;
         transition: all 0.2s ease !important;
         border: none !important;
-        box-shadow: 0 2px 6px rgba(13, 148, 136, 0.25);
+        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
     }
     
     [data-testid="stFormSubmitButton"] > button:hover {
-        background: #0F766E !important;
-        box-shadow: 0 4px 10px rgba(13, 148, 136, 0.35);
+        background: #1D4ED8 !important;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.32);
     }
     
     /* 回退按钮 - 活力橙 */
     .btn-back > button {
-        background: #F97316 !important;
+        background: #D97706 !important;
         color: #ffffff !important;
-        box-shadow: 0 2px 6px rgba(249, 115, 22, 0.2);
+        box-shadow: 0 2px 8px rgba(217, 119, 6, 0.22);
     }
     
     .btn-back > button:hover {
-        background: #EA580C !important;
-        box-shadow: 0 4px 10px rgba(249, 115, 22, 0.3);
+        background: #B45309 !important;
+        box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3);
     }
     
-    /* 重播按钮 - 中亮青绿 */
+    /* 重播按钮 */
     .btn-replay > button {
-        background: #14B8A6 !important;
+        background: #64748B !important;
         color: #ffffff !important;
-        box-shadow: 0 2px 6px rgba(20, 184, 166, 0.2);
+        box-shadow: 0 2px 8px rgba(100, 116, 139, 0.22);
     }
     
     .btn-replay > button:hover {
-        background: #0D9488 !important;
-        box-shadow: 0 4px 10px rgba(20, 184, 166, 0.3);
+        background: #475569 !important;
+        box-shadow: 0 4px 12px rgba(100, 116, 139, 0.3);
     }
     
-    /* 进度条 - 青绿 */
+    /* 进度条 */
     .stProgress > div > div {
-        background: #0D9488;
+        background: #2563EB;
         border-radius: 8px;
     }
     
     /* 状态提示条 */
     .review-banner {
-        background: #F0FDFA;
-        border: 2px solid #F97316;
+        background: #FFFBEB;
+        border: 2px solid #F59E0B;
         border-radius: 10px;
         padding: 12px 20px;
         margin-bottom: 16px;
@@ -247,15 +248,15 @@ st.markdown("""
         border-radius: 8px 8px 0 0;
         padding: 10px 20px;
         font-weight: 500;
-        background: #CCFBF1;
-        border: 1px solid #99F6E4;
+        background: #E2E8F0;
+        border: 1px solid #CBD5E1;
         border-bottom: none;
-        color: #0F766E;
+        color: #475569;
     }
     
     .stTabs [aria-selected="true"] {
         background: #ffffff !important;
-        color: #0D9488 !important;
+        color: #2563EB !important;
         font-weight: 600 !important;
     }
     
@@ -263,18 +264,18 @@ st.markdown("""
     .stDataFrame {
         border-radius: 12px;
         overflow: hidden;
-        box-shadow: 0 2px 8px rgba(13, 148, 136, 0.08);
+        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
     }
     
     /* Metric 卡片 */
     [data-testid="stMetricValue"] {
         font-size: 2rem;
         font-weight: 700;
-        color: #0D9488;
+        color: #2563EB;
     }
     
     [data-testid="stMetricLabel"] {
-        color: #0F766E !important;
+        color: #475569 !important;
     }
     
     /* 全局容器 */
@@ -288,7 +289,7 @@ st.markdown("""
     hr {
         border: none;
         height: 1px;
-        background: #CCFBF1;
+        background: #D7DEE8;
         margin: 24px 0;
     }
     
@@ -326,19 +327,19 @@ st.markdown("""
     
     /* 标签和辅助文字 */
     label, .stMarkdown p {
-        color: #134E4A !important;
+        color: #1F2937 !important;
     }
     
     /* 表格表头 */
     .stDataFrame th {
-        background: #F0FDFA !important;
-        color: #0F766E !important;
+        background: #F8FAFC !important;
+        color: #475569 !important;
         font-weight: 600 !important;
     }
     
     /* 表格单元格 */
     .stDataFrame td {
-        color: #134E4A !important;
+        color: #1F2937 !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -419,6 +420,15 @@ def replay_current():
     """重播当前单词"""
     st.session_state.replay_counter += 1
     st.rerun()
+
+def get_dictation_prompt_html(index, total):
+    """生成不泄露标准答案的听写提示卡片。"""
+    return f"""
+        <div class='word-info'>
+            <div class='word-display'>第 {index + 1} / {total} 个词</div>
+            <div class='meaning-display'>请根据音频填写拼写和释义，提交后再查看对照结果。</div>
+        </div>
+    """
 
 # ==========================================
 # 4. 页面 UI 构建
@@ -515,11 +525,8 @@ elif st.session_state.current_index < len(st.session_state.vocab_list):
     with btn_col3:
         pass  # 占位，保持布局平衡
     
-    # 单词信息卡片
-    st.markdown("<div class='word-info'>", unsafe_allow_html=True)
-    st.markdown(f"<div class='word-display'>{current_word_data['word']}</div>", unsafe_allow_html=True)
-    st.markdown(f"<div class='meaning-display'>{current_word_data['meaning']}</div>", unsafe_allow_html=True)
-    st.markdown("</div>", unsafe_allow_html=True)
+    # 听写提示卡片：听写阶段不展示标准答案，避免提前泄露单词和释义。
+    st.markdown(get_dictation_prompt_html(curr, total), unsafe_allow_html=True)
 
     # 盲打输入表单
     with st.container():
