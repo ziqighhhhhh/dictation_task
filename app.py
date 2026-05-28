@@ -5,7 +5,7 @@ import io
 import base64
 
 # ==========================================
-# 1. 页面与全局美化配置 (米色纸质学习风)
+# 1. 页面与全局美化配置 (青绿专注风)
 # ==========================================
 st.set_page_config(page_title="纯净听写记录仪 Pro", page_icon="🎙️", layout="centered")
 
@@ -16,7 +16,7 @@ st.markdown("""
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
     
     .stApp {
-        background: #fefce8;
+        background: #F0FDFA;
         font-family: 'Noto Sans SC', sans-serif;
     }
     
@@ -25,27 +25,27 @@ st.markdown("""
         text-align: center;
         font-weight: 700;
         font-size: 2.2rem;
-        color: #451a03;
+        color: #134E4A;
         margin-bottom: 0.2rem;
         letter-spacing: -0.5px;
     }
     
     .subtitle {
         text-align: center;
-        color: #78350f;
+        color: #0F766E;
         font-size: 14px;
         font-weight: 400;
         margin-bottom: 2rem;
     }
     
-    /* 实色卡片基础 - 移除毛玻璃 */
+    /* 实色卡片基础 */
     .glass-card {
         background: #ffffff;
-        border: 1px solid #fde68a;
+        border: 1px solid #CCFBF1;
         border-radius: 16px;
         padding: 24px;
         margin-bottom: 16px;
-        box-shadow: 0 2px 8px rgba(120, 53, 15, 0.08);
+        box-shadow: 0 2px 8px rgba(13, 148, 136, 0.08);
         animation: slideUp 0.5s ease-out;
     }
     
@@ -65,10 +65,10 @@ st.markdown("""
         to { opacity: 1; }
     }
     
-    /* 音频播放器区域 - 实色 */
+    /* 音频播放器区域 */
     .audio-area {
-        background: #fffbeb;
-        border: 1px solid #fcd34d;
+        background: #ffffff;
+        border: 2px solid #99F6E4;
         border-radius: 12px;
         padding: 20px;
         margin-bottom: 16px;
@@ -76,7 +76,7 @@ st.markdown("""
     }
     
     .audio-label {
-        color: #78350f;
+        color: #0F766E;
         font-size: 13px;
         font-weight: 500;
         margin-bottom: 12px;
@@ -97,28 +97,28 @@ st.markdown("""
         border-radius: 8px;
     }
     
-    /* 单词信息卡片 - 实色 */
+    /* 单词信息卡片 */
     .word-info {
         background: #ffffff;
-        border: 2px solid #d97706;
+        border: 2px solid #0D9488;
         border-radius: 12px;
         padding: 24px;
         margin-bottom: 16px;
         text-align: center;
-        box-shadow: 0 2px 8px rgba(120, 53, 15, 0.06);
+        box-shadow: 0 2px 8px rgba(13, 148, 136, 0.06);
     }
     
     .word-display {
         font-size: 2rem;
         font-weight: 700;
-        color: #451a03;
+        color: #134E4A;
         margin-bottom: 8px;
         letter-spacing: 1px;
     }
     
     .meaning-display {
         font-size: 1.1rem;
-        color: #78350f;
+        color: #0F766E;
         font-weight: 400;
     }
     
@@ -129,34 +129,34 @@ st.markdown("""
         margin-bottom: 16px;
     }
     
-    /* 表单区域 - 实色 */
+    /* 表单区域 */
     .form-area {
         background: #ffffff;
-        border: 1px solid #fde68a;
+        border: 1px solid #CCFBF1;
         border-radius: 16px;
         padding: 24px;
-        box-shadow: 0 2px 8px rgba(120, 53, 15, 0.06);
+        box-shadow: 0 2px 8px rgba(13, 148, 136, 0.06);
     }
     
-    /* 输入框美化 - 高对比 */
+    /* 输入框美化 */
     [data-testid="stTextInput"] input {
         border-radius: 10px !important;
-        border: 2px solid #d4d4d8 !important;
+        border: 2px solid #99F6E4 !important;
         background: #ffffff !important;
         padding: 12px 16px !important;
         font-size: 15px !important;
-        color: #451a03 !important;
+        color: #134E4A !important;
         transition: all 0.3s ease !important;
     }
     
     [data-testid="stTextInput"] input:focus {
-        border-color: #d97706 !important;
-        box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.15) !important;
+        border-color: #0D9488 !important;
+        box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15) !important;
         outline: none !important;
     }
     
     [data-testid="stTextInput"] input::placeholder {
-        color: #a1a1aa !important;
+        color: #5EEAD4 !important;
     }
     
     /* 按钮美化 */
@@ -170,68 +170,68 @@ st.markdown("""
     
     .stButton > button:hover {
         transform: translateY(-1px);
-        box-shadow: 0 4px 8px rgba(120, 53, 15, 0.15);
+        box-shadow: 0 4px 8px rgba(13, 148, 136, 0.15);
     }
     
     .stButton > button:active {
         transform: translateY(0);
     }
     
-    /* 主要按钮 - 琥珀实色 */
+    /* 主要按钮 - 青绿 */
     [data-testid="stFormSubmitButton"] > button {
-        background: #d97706 !important;
+        background: #0D9488 !important;
         color: #ffffff !important;
         border-radius: 10px !important;
         font-weight: 600 !important;
         padding: 12px 24px !important;
         transition: all 0.2s ease !important;
         border: none !important;
-        box-shadow: 0 2px 6px rgba(217, 119, 6, 0.25);
+        box-shadow: 0 2px 6px rgba(13, 148, 136, 0.25);
     }
     
     [data-testid="stFormSubmitButton"] > button:hover {
-        background: #b45309 !important;
-        box-shadow: 0 4px 10px rgba(217, 119, 6, 0.35);
+        background: #0F766E !important;
+        box-shadow: 0 4px 10px rgba(13, 148, 136, 0.35);
     }
     
-    /* 回退按钮 - 深褐实色 */
+    /* 回退按钮 - 活力橙 */
     .btn-back > button {
-        background: #78350f !important;
+        background: #F97316 !important;
         color: #ffffff !important;
-        box-shadow: 0 2px 6px rgba(120, 53, 15, 0.2);
+        box-shadow: 0 2px 6px rgba(249, 115, 22, 0.2);
     }
     
     .btn-back > button:hover {
-        background: #451a03 !important;
-        box-shadow: 0 4px 10px rgba(120, 53, 15, 0.3);
+        background: #EA580C !important;
+        box-shadow: 0 4px 10px rgba(249, 115, 22, 0.3);
     }
     
-    /* 重播按钮 - 青绿实色 */
+    /* 重播按钮 - 中亮青绿 */
     .btn-replay > button {
-        background: #059669 !important;
+        background: #14B8A6 !important;
         color: #ffffff !important;
-        box-shadow: 0 2px 6px rgba(5, 150, 105, 0.2);
+        box-shadow: 0 2px 6px rgba(20, 184, 166, 0.2);
     }
     
     .btn-replay > button:hover {
-        background: #047857 !important;
-        box-shadow: 0 4px 10px rgba(5, 150, 105, 0.3);
+        background: #0D9488 !important;
+        box-shadow: 0 4px 10px rgba(20, 184, 166, 0.3);
     }
     
-    /* 进度条 - 琥珀色 */
+    /* 进度条 - 青绿 */
     .stProgress > div > div {
-        background: #d97706;
+        background: #0D9488;
         border-radius: 8px;
     }
     
-    /* 状态提示条 - 实色 */
+    /* 状态提示条 */
     .review-banner {
-        background: #fffbeb;
-        border: 2px solid #d97706;
+        background: #F0FDFA;
+        border: 2px solid #F97316;
         border-radius: 10px;
         padding: 12px 20px;
         margin-bottom: 16px;
-        color: #78350f;
+        color: #C2410C;
         font-weight: 600;
         font-size: 14px;
         text-align: center;
@@ -247,15 +247,15 @@ st.markdown("""
         border-radius: 8px 8px 0 0;
         padding: 10px 20px;
         font-weight: 500;
-        background: #fef3c7;
-        border: 1px solid #fde68a;
+        background: #CCFBF1;
+        border: 1px solid #99F6E4;
         border-bottom: none;
-        color: #78350f;
+        color: #0F766E;
     }
     
     .stTabs [aria-selected="true"] {
         background: #ffffff !important;
-        color: #d97706 !important;
+        color: #0D9488 !important;
         font-weight: 600 !important;
     }
     
@@ -263,18 +263,18 @@ st.markdown("""
     .stDataFrame {
         border-radius: 12px;
         overflow: hidden;
-        box-shadow: 0 2px 8px rgba(120, 53, 15, 0.08);
+        box-shadow: 0 2px 8px rgba(13, 148, 136, 0.08);
     }
     
     /* Metric 卡片 */
     [data-testid="stMetricValue"] {
         font-size: 2rem;
         font-weight: 700;
-        color: #d97706;
+        color: #0D9488;
     }
     
     [data-testid="stMetricLabel"] {
-        color: #78350f !important;
+        color: #0F766E !important;
     }
     
     /* 全局容器 */
@@ -288,57 +288,57 @@ st.markdown("""
     hr {
         border: none;
         height: 1px;
-        background: #fde68a;
+        background: #CCFBF1;
         margin: 24px 0;
     }
     
-    /* 成功消息 - 实色 */
+    /* 成功消息 */
     .stSuccess {
-        background: #ecfdf5 !important;
-        border: 1px solid #6ee7b7 !important;
+        background: #ECFDF5 !important;
+        border: 1px solid #6EE7B7 !important;
         border-radius: 12px !important;
-        color: #065f46 !important;
+        color: #065F46 !important;
     }
     
-    /* 信息提示 - 实色 */
+    /* 信息提示 */
     .stInfo {
-        background: #eff6ff !important;
-        border: 1px solid #93c5fd !important;
+        background: #F0F9FF !important;
+        border: 1px solid #7DD3FC !important;
         border-radius: 10px !important;
-        color: #1e40af !important;
+        color: #0369A1 !important;
     }
     
-    /* 警告提示 - 实色 */
+    /* 警告提示 */
     .stWarning {
-        background: #fffbeb !important;
-        border: 1px solid #fcd34d !important;
+        background: #FFF7ED !important;
+        border: 1px solid #FDBA74 !important;
         border-radius: 10px !important;
-        color: #92400e !important;
+        color: #C2410C !important;
     }
     
-    /* 错误提示 - 实色 */
+    /* 错误提示 */
     .stError {
-        background: #fef2f2 !important;
-        border: 1px solid #fca5a5 !important;
+        background: #FEF2F2 !important;
+        border: 1px solid #FCA5A5 !important;
         border-radius: 10px !important;
-        color: #991b1b !important;
+        color: #991B1B !important;
     }
     
     /* 标签和辅助文字 */
     label, .stMarkdown p {
-        color: #451a03 !important;
+        color: #134E4A !important;
     }
     
     /* 表格表头 */
     .stDataFrame th {
-        background: #fffbeb !important;
-        color: #78350f !important;
+        background: #F0FDFA !important;
+        color: #0F766E !important;
         font-weight: 600 !important;
     }
     
     /* 表格单元格 */
     .stDataFrame td {
-        color: #451a03 !important;
+        color: #134E4A !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -622,4 +622,3 @@ else:
             reset_session()
     
     st.markdown("</div>", unsafe_allow_html=True)
-
