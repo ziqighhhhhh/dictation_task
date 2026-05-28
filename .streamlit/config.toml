@@ -1,0 +1,11 @@
+[theme]
+# 背景色设置为主流的深空灰/黑
+backgroundColor = "#0d1117"
+# 卡片和输入框等次级背景色
+secondaryBackgroundColor = "#161b22"
+# 强调色（Accent），用于进度条和主按钮，采用高亮蓝色
+primaryColor = "#38bdf8"
+# 全局文本颜色设为高对比度浅灰
+textColor = "#c9d1d9"
+# 使用系统无衬线字体，保持干净利落
+font = "sans serif"
