@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pandas as pd
 from gtts import gTTS
@@ -6,7 +5,7 @@ import io
 import base64
 
 # ==========================================
-# 1. 页面与全局美化配置 (清爽学习风)
+# 1. 页面与全局美化配置 (沉浸听写工作台)
 # ==========================================
 st.set_page_config(page_title="纯净听写记录仪 Pro", page_icon="🎙️", layout="centered")
 
@@ -17,7 +16,7 @@ st.markdown("""
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
     
     .stApp {
-        background: #F8FAFC;
+        background: #0F172A;
         font-family: 'Noto Sans SC', sans-serif;
     }
     
@@ -26,14 +25,14 @@ st.markdown("""
         text-align: center;
         font-weight: 700;
         font-size: 2.2rem;
-        color: #1F2937;
+        color: #E5EEF9;
         margin-bottom: 0.2rem;
         letter-spacing: -0.5px;
     }
     
     .subtitle {
         text-align: center;
-        color: #475569;
+        color: #93A4B8;
         font-size: 14px;
         font-weight: 400;
         margin-bottom: 2rem;
@@ -41,7 +40,7 @@ st.markdown("""
     
     /* 实色卡片基础 */
     .glass-card {
-        background: #ffffff;
+        background: #F8FAFC;
         border: 1px solid #D7DEE8;
         border-radius: 16px;
         padding: 24px;
@@ -66,18 +65,169 @@ st.markdown("""
         to { opacity: 1; }
     }
     
+    /* 沉浸式听写工作台 */
+    .dictation-shell {
+        display: grid;
+        gap: 14px;
+        animation: slideUp 0.35s ease-out;
+    }
+
+    .compact-status {
+        display: grid;
+        grid-template-columns: 1fr auto auto;
+        gap: 10px;
+        align-items: center;
+        background: #111827;
+        border: 1px solid #263244;
+        border-radius: 12px;
+        padding: 12px 14px;
+        color: #E5EEF9;
+    }
+
+    .status-count {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #FFFFFF;
+        line-height: 1;
+    }
+
+    .status-label {
+        color: #93A4B8;
+        font-size: 0.78rem;
+        margin-top: 4px;
+    }
+
+    .status-pill {
+        background: #1E40AF;
+        border: 1px solid #3B82F6;
+        border-radius: 999px;
+        color: #DBEAFE;
+        font-size: 0.78rem;
+        font-weight: 700;
+        padding: 7px 10px;
+        white-space: nowrap;
+    }
+
+    .shortcut-strip {
+        color: #93A4B8;
+        font-size: 0.78rem;
+        white-space: nowrap;
+    }
+
+    .audio-console {
+        background: #172033;
+        border: 1px solid #334155;
+        border-radius: 14px;
+        padding: 16px;
+        box-shadow: 0 18px 42px rgba(2, 6, 23, 0.28);
+    }
+
+    .audio-console-header {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: center;
+        margin-bottom: 12px;
+    }
+
+    .audio-title {
+        color: #F8FAFC;
+        font-size: 1rem;
+        font-weight: 700;
+    }
+
+    .audio-state {
+        color: #93C5FD;
+        font-size: 0.82rem;
+        font-weight: 600;
+    }
+
+    .workspace-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 180px;
+        gap: 14px;
+        align-items: start;
+    }
+
+    .answer-console {
+        background: #F8FAFC;
+        border: 1px solid #BFDBFE;
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 20px 45px rgba(15, 23, 42, 0.22);
+    }
+
+    .answer-console-title {
+        color: #0F172A;
+        font-size: 1rem;
+        font-weight: 800;
+        margin-bottom: 4px;
+    }
+
+    .answer-console-subtitle {
+        color: #64748B;
+        font-size: 0.84rem;
+        margin-bottom: 14px;
+    }
+
+    .history-rail {
+        background: #111827;
+        border: 1px solid #263244;
+        border-radius: 14px;
+        padding: 14px;
+        color: #CBD5E1;
+    }
+
+    .history-title {
+        color: #F8FAFC;
+        font-size: 0.9rem;
+        font-weight: 800;
+        margin-bottom: 10px;
+    }
+
+    .history-item {
+        border-top: 1px solid #263244;
+        padding: 8px 0;
+        font-size: 0.82rem;
+        color: #CBD5E1;
+        overflow-wrap: anywhere;
+    }
+
+    .history-empty {
+        color: #64748B;
+        font-size: 0.82rem;
+        line-height: 1.45;
+    }
+
+    .focus-note {
+        color: #93A4B8;
+        font-size: 0.78rem;
+        margin-top: 10px;
+    }
+
+    @media (max-width: 760px) {
+        .compact-status,
+        .workspace-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .shortcut-strip {
+            white-space: normal;
+        }
+    }
+
     /* 音频播放器区域 */
     .audio-area {
-        background: #ffffff;
-        border: 2px solid #BFDBFE;
-        border-radius: 12px;
-        padding: 20px;
-        margin-bottom: 16px;
-        text-align: center;
+        background: transparent;
+        border: 0;
+        border-radius: 0;
+        padding: 0;
+        margin-bottom: 0;
+        text-align: left;
     }
     
     .audio-label {
-        color: #2563EB;
+        color: #93C5FD;
         font-size: 13px;
         font-weight: 500;
         margin-bottom: 12px;
@@ -100,11 +250,11 @@ st.markdown("""
     
     /* 单词信息卡片 */
     .word-info {
-        background: #EFF6FF;
-        border: 2px dashed #93C5FD;
-        border-radius: 12px;
-        padding: 24px;
-        margin-bottom: 16px;
+        background: #172033;
+        border: 1px dashed #3B82F6;
+        border-radius: 14px;
+        padding: 16px;
+        margin-bottom: 14px;
         text-align: center;
         box-shadow: 0 8px 20px rgba(37, 99, 235, 0.08);
     }
@@ -112,14 +262,14 @@ st.markdown("""
     .word-display {
         font-size: 1.35rem;
         font-weight: 700;
-        color: #1D4ED8;
+        color: #DBEAFE;
         margin-bottom: 8px;
         letter-spacing: 0;
     }
     
     .meaning-display {
         font-size: 0.95rem;
-        color: #475569;
+        color: #93A4B8;
         font-weight: 400;
     }
     
@@ -132,11 +282,11 @@ st.markdown("""
     
     /* 表单区域 */
     .form-area {
-        background: #ffffff;
-        border: 1px solid #D7DEE8;
-        border-radius: 16px;
-        padding: 24px;
-        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+        background: transparent;
+        border: 0;
+        border-radius: 0;
+        padding: 0;
+        box-shadow: none;
     }
     
     /* 输入框美化 */
@@ -144,15 +294,15 @@ st.markdown("""
         border-radius: 10px !important;
         border: 2px solid #BFDBFE !important;
         background: #ffffff !important;
-        padding: 12px 16px !important;
-        font-size: 15px !important;
+        padding: 15px 16px !important;
+        font-size: 17px !important;
         color: #1F2937 !important;
         transition: all 0.3s ease !important;
     }
     
     [data-testid="stTextInput"] input:focus {
         border-color: #2563EB !important;
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.16) !important;
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.18) !important;
         outline: none !important;
     }
     
@@ -184,7 +334,7 @@ st.markdown("""
         color: #ffffff !important;
         border-radius: 10px !important;
         font-weight: 600 !important;
-        padding: 12px 24px !important;
+        padding: 14px 24px !important;
         transition: all 0.2s ease !important;
         border: none !important;
         box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
@@ -280,9 +430,9 @@ st.markdown("""
     
     /* 全局容器 */
     .block-container {
-        padding-top: 2rem !important;
+        padding-top: 1rem !important;
         padding-bottom: 3rem !important;
-        max-width: 700px !important;
+        max-width: 900px !important;
     }
     
     /* 分割线 */
@@ -327,7 +477,7 @@ st.markdown("""
     
     /* 标签和辅助文字 */
     label, .stMarkdown p {
-        color: #1F2937 !important;
+        color: #E5EEF9 !important;
     }
     
     /* 表格表头 */
@@ -430,6 +580,75 @@ def get_dictation_prompt_html(index, total):
         </div>
     """
 
+def get_dictation_status_html(index, total, is_reviewing):
+    """生成紧凑状态栏。"""
+    status_text = "回听修正" if is_reviewing else "正式听写"
+    return f"""
+        <div class='compact-status'>
+            <div>
+                <div class='status-count'>{index + 1}<span style='color:#64748B;font-size:1rem;'> / {total}</span></div>
+                <div class='status-label'>当前词序 · 答案仅在完成后对照</div>
+            </div>
+            <div class='status-pill'>{status_text}</div>
+            <div class='shortcut-strip'>Space 重播 · Enter 下一词</div>
+        </div>
+    """
+
+def get_history_rail_html(records):
+    """生成轻量历史侧栏，不暴露未听写的标准答案。"""
+    recent_records = records[-5:]
+    if not recent_records:
+        items_html = "<div class='history-empty'>完成第一条记录后，这里会显示最近输入，方便保持节奏。</div>"
+    else:
+        items_html = "".join(
+            f"<div class='history-item'><strong>{len(records) - len(recent_records) + offset + 1}.</strong> "
+            f"{record['user_word']} · {record['user_meaning']}</div>"
+            for offset, record in enumerate(recent_records)
+        )
+
+    return f"""
+        <aside class='history-rail'>
+            <div class='history-title'>最近记录</div>
+            {items_html}
+        </aside>
+    """
+
+def inject_dictation_shortcuts():
+    """注入快捷键：Space 重播，Enter 提交。"""
+    st.components.v1.html(
+        """
+        <script>
+        const doc = window.parent.document;
+        const focusFirstInput = () => {
+            const input = doc.querySelector('input[aria-label*="Word"], input[aria-label*="拼写"]');
+            if (input) input.focus();
+        };
+        focusFirstInput();
+        doc.addEventListener('keydown', (event) => {
+            const active = doc.activeElement;
+            const isInput = active && ['INPUT', 'TEXTAREA'].includes(active.tagName);
+            if (event.code === 'Space' && !isInput) {
+                const replay = [...doc.querySelectorAll('button')].find((button) => button.innerText.includes('重播'));
+                if (replay) {
+                    event.preventDefault();
+                    replay.click();
+                }
+            }
+            if (event.key === 'Enter' && isInput && !event.shiftKey) {
+                const submit = [...doc.querySelectorAll('button')].find((button) =>
+                    button.innerText.includes('记录并进入下一个') || button.innerText.includes('更新并继续')
+                );
+                if (submit) {
+                    event.preventDefault();
+                    submit.click();
+                }
+            }
+        });
+        </script>
+        """,
+        height=0,
+    )
+
 # ==========================================
 # 4. 页面 UI 构建
 # ==========================================
@@ -480,16 +699,11 @@ elif st.session_state.current_index < len(st.session_state.vocab_list):
     total = len(st.session_state.vocab_list)
     curr = st.session_state.current_index
     current_word_data = st.session_state.vocab_list[curr]
+    inject_dictation_shortcuts()
     
-    # 顶部状态栏：进度指示器与防中断导出
-    col1, col2 = st.columns([3, 1])
-    with col1:
-        st.progress((curr) / total, text=f"当前进度: {curr + 1} / {total}")
-    with col2:
-        temp_md = generate_markdown_report()
-        st.download_button("💾 暂存", temp_md, file_name="听写暂存记录.md", use_container_width=True)
-
-    st.divider()
+    st.markdown("<section class='dictation-shell'>", unsafe_allow_html=True)
+    st.markdown(get_dictation_status_html(curr, total, st.session_state.is_reviewing), unsafe_allow_html=True)
+    st.progress((curr) / total, text=f"当前进度: {curr + 1} / {total}")
     
     # 回听模式提示条
     if st.session_state.is_reviewing:
@@ -498,35 +712,42 @@ elif st.session_state.current_index < len(st.session_state.vocab_list):
             unsafe_allow_html=True
         )
 
-    # 音频播放区 (自动播放)
-    st.markdown("<div class='audio-area'>", unsafe_allow_html=True)
-    st.markdown("<div class='audio-label'>🎧 正在听写...</div>", unsafe_allow_html=True)
-    
-    # 使用 replay_counter 确保每次重播都重新生成音频
+    st.markdown("<section class='audio-console'>", unsafe_allow_html=True)
+    st.markdown(
+        "<div class='audio-console-header'>"
+        "<div><div class='audio-title'>听写音频</div><div class='audio-state'>自动播放中 · 可随时重播</div></div>"
+        "</div>",
+        unsafe_allow_html=True,
+    )
     audio_html = get_autoplay_audio_html(current_word_data["word"])
-    st.components.v1.html(audio_html, height=60)
-    st.markdown("</div>", unsafe_allow_html=True)
-    
-    # 操作按钮组：重播 + 上一个
-    btn_col1, btn_col2, btn_col3 = st.columns([1, 1, 2])
-    with btn_col1:
+    st.components.v1.html(audio_html, height=58)
+    audio_col1, audio_col2, audio_col3 = st.columns([1, 1, 2])
+    with audio_col1:
         st.markdown("<div class='btn-replay'>", unsafe_allow_html=True)
         if st.button("🔁 重播", use_container_width=True, key="btn_replay"):
             replay_current()
         st.markdown("</div>", unsafe_allow_html=True)
-    
-    with btn_col2:
+    with audio_col2:
         st.markdown("<div class='btn-back'>", unsafe_allow_html=True)
         if st.button("⏮️ 上一个", use_container_width=True, key="btn_prev", 
                      disabled=(curr == 0)):
             go_to_previous()
         st.markdown("</div>", unsafe_allow_html=True)
-    
-    with btn_col3:
-        pass  # 占位，保持布局平衡
-    
+    with audio_col3:
+        temp_md = generate_markdown_report()
+        st.download_button("💾 暂存记录", temp_md, file_name="听写暂存记录.md", use_container_width=True)
+    st.markdown("</section>", unsafe_allow_html=True)
+
     # 听写提示卡片：听写阶段不展示标准答案，避免提前泄露单词和释义。
     st.markdown(get_dictation_prompt_html(curr, total), unsafe_allow_html=True)
+
+    st.markdown("<section class='workspace-grid'>", unsafe_allow_html=True)
+    st.markdown("<main class='answer-console'>", unsafe_allow_html=True)
+    st.markdown(
+        "<div class='answer-console-title'>输入答案</div>"
+        "<div class='answer-console-subtitle'>英文拼写是主任务，中文释义可作为辅助记忆。</div>",
+        unsafe_allow_html=True,
+    )
 
     # 盲打输入表单
     with st.container():
@@ -546,7 +767,7 @@ elif st.session_state.current_index < len(st.session_state.vocab_list):
                 default_meaning = ""
         
         with st.form(key=f"dictation_form_{curr}_{st.session_state.replay_counter}", clear_on_submit=True):
-            c1, c2 = st.columns(2)
+            c1, c2 = st.columns([1.4, 1])
             with c1:
                 user_w = st.text_input("📝 拼写记录 (Word)", 
                                        value=default_word,
@@ -592,6 +813,11 @@ elif st.session_state.current_index < len(st.session_state.vocab_list):
                 st.rerun()
         
         st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown("<div class='focus-note'>专注模式：隐藏标准答案，只保留听、写、提交。快捷键 Space 重播，Enter 下一词。</div>", unsafe_allow_html=True)
+    st.markdown("</main>", unsafe_allow_html=True)
+    st.markdown(get_history_rail_html(st.session_state.records), unsafe_allow_html=True)
+    st.markdown("</section>", unsafe_allow_html=True)
+    st.markdown("</section>", unsafe_allow_html=True)
 
 # ----------------- 视图 3：听写完成与导出 -----------------
 else:
