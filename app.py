@@ -5,50 +5,331 @@ import io
 import base64
 
 # ==========================================
-# 1. 页面与全局美化配置 (Dark Tech / Bento Style)
+# 1. 页面与全局美化配置 (Liquid Glass 学习风)
 # ==========================================
 st.set_page_config(page_title="纯净听写记录仪 Pro", page_icon="🎙️", layout="centered")
 
 # 注入自定义 CSS
 st.markdown("""
     <style>
-    /* 全局字体和背景微调 */
+    /* 全局字体和背景 */
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+    
     .stApp {
-        background-color: #0d1117;
+        background: linear-gradient(135deg, #e0f2fe 0%, #dcfce7 50%, #f0e9ff 100%);
+        font-family: 'Noto Sans SC', sans-serif;
     }
-    /* 美化主标题 */
+    
+    /* 主标题 */
     h1 {
         text-align: center;
         font-weight: 700;
-        background: -webkit-linear-gradient(45deg, #38bdf8, #818cf8);
+        font-size: 2.2rem;
+        background: linear-gradient(90deg, #2563eb, #059669);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        margin-bottom: 0rem;
+        margin-bottom: 0.2rem;
+        letter-spacing: -0.5px;
     }
+    
     .subtitle {
         text-align: center;
-        color: #8b949e;
+        color: #64748b;
         font-size: 14px;
+        font-weight: 400;
         margin-bottom: 2rem;
     }
-    /* 美化音频播放器 */
+    
+    /* 毛玻璃卡片基础 */
+    .glass-card {
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 20px;
+        padding: 24px;
+        margin-bottom: 16px;
+        box-shadow: 0 8px 32px rgba(31, 38, 135, 0.07);
+        animation: slideUp 0.5s ease-out;
+    }
+    
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    /* 音频播放器区域 */
+    .audio-area {
+        background: rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 16px;
+        text-align: center;
+    }
+    
+    .audio-label {
+        color: #475569;
+        font-size: 13px;
+        font-weight: 500;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+    
     audio {
         width: 100%;
-        border-radius: 8px;
-        margin-top: 10px;
-        margin-bottom: 20px;
+        border-radius: 10px;
+        margin-top: 8px;
     }
-    /* 卡片式容器模拟 (给区块增加间距) */
-    .block-container {
-        padding-top: 3rem !important;
-        padding-bottom: 3rem !important;
+    
+    audio::-webkit-media-controls-panel {
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 10px;
     }
-    /* 表单边框淡化 */
-    [data-testid="stForm"] {
-        border: 1px solid #30363d;
-        border-radius: 12px;
+    
+    /* 单词信息卡片 */
+    .word-info {
+        background: rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 16px;
+        text-align: center;
+    }
+    
+    .word-display {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 8px;
+        letter-spacing: 1px;
+    }
+    
+    .meaning-display {
+        font-size: 1.1rem;
+        color: #64748b;
+        font-weight: 400;
+    }
+    
+    /* 按钮组 */
+    .button-group {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+    
+    /* 表单区域 */
+    .form-area {
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 20px;
         padding: 24px;
-        background-color: #161b22;
+        box-shadow: 0 8px 32px rgba(31, 38, 135, 0.07);
+    }
+    
+    /* 输入框美化 */
+    [data-testid="stTextInput"] input {
+        border-radius: 12px !important;
+        border: 1.5px solid rgba(203, 213, 225, 0.6) !important;
+        background: rgba(255, 255, 255, 0.8) !important;
+        padding: 12px 16px !important;
+        font-size: 15px !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    [data-testid="stTextInput"] input:focus {
+        border-color: #3b82f6 !important;
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15) !important;
+        outline: none !important;
+    }
+    
+    /* 按钮美化 */
+    .stButton > button {
+        border-radius: 12px !important;
+        font-weight: 600 !important;
+        padding: 10px 20px !important;
+        transition: all 0.3s ease !important;
+        border: none !important;
+    }
+    
+    .stButton > button:hover {
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .stButton > button:active {
+        transform: translateY(0) scale(0.98);
+    }
+    
+    /* 主要按钮 */
+    [data-testid="stFormSubmitButton"] > button {
+        background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
+        color: white !important;
+        border-radius: 12px !important;
+        font-weight: 600 !important;
+        padding: 12px 24px !important;
+        transition: all 0.3s ease !important;
+        border: none !important;
+        box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
+    }
+    
+    [data-testid="stFormSubmitButton"] > button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+    }
+    
+    /* 警告/回退按钮 */
+    .btn-back > button {
+        background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+        color: white !important;
+        box-shadow: 0 4px 14px rgba(245, 158, 11, 0.3);
+    }
+    
+    .btn-back > button:hover {
+        box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+    }
+    
+    /* 重播按钮 */
+    .btn-replay > button {
+        background: linear-gradient(135deg, #10b981, #059669) !important;
+        color: white !important;
+        box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+    }
+    
+    .btn-replay > button:hover {
+        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    }
+    
+    /* 进度条 */
+    .stProgress > div > div {
+        background: linear-gradient(90deg, #3b82f6, #10b981, #3b82f6);
+        background-size: 200% 100%;
+        animation: shimmer 2s infinite;
+        border-radius: 10px;
+    }
+    
+    @keyframes shimmer {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+    }
+    
+    /* 状态提示条 */
+    .review-banner {
+        background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(245, 158, 11, 0.05));
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(245, 158, 11, 0.3);
+        border-radius: 12px;
+        padding: 12px 20px;
+        margin-bottom: 16px;
+        color: #92400e;
+        font-weight: 500;
+        font-size: 14px;
+        text-align: center;
+        animation: fadeIn 0.4s ease-out;
+    }
+    
+    /* Tab 美化 */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        border-radius: 10px 10px 0 0;
+        padding: 10px 20px;
+        font-weight: 500;
+        background: rgba(255, 255, 255, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-bottom: none;
+    }
+    
+    .stTabs [aria-selected="true"] {
+        background: rgba(255, 255, 255, 0.8) !important;
+        color: #2563eb !important;
+        font-weight: 600 !important;
+    }
+    
+    /* 表格美化 */
+    .stDataFrame {
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+    }
+    
+    /* Metric 卡片 */
+    [data-testid="stMetricValue"] {
+        font-size: 2rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #2563eb, #059669);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    /* 全局容器 */
+    .block-container {
+        padding-top: 2rem !important;
+        padding-bottom: 3rem !important;
+        max-width: 700px !important;
+    }
+    
+    /* 分割线 */
+    hr {
+        border: none;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(148, 163, 184, 0.4), transparent);
+        margin: 24px 0;
+    }
+    
+    /* 成功消息 */
+    .stSuccess {
+        background: rgba(16, 185, 129, 0.1) !important;
+        border: 1px solid rgba(16, 185, 129, 0.2) !important;
+        border-radius: 16px !important;
+        backdrop-filter: blur(12px);
+    }
+    
+    /* 信息提示 */
+    .stInfo {
+        background: rgba(59, 130, 246, 0.1) !important;
+        border: 1px solid rgba(59, 130, 246, 0.2) !important;
+        border-radius: 12px !important;
+        backdrop-filter: blur(12px);
+    }
+    
+    /* 警告提示 */
+    .stWarning {
+        background: rgba(245, 158, 11, 0.1) !important;
+        border: 1px solid rgba(245, 158, 11, 0.2) !important;
+        border-radius: 12px !important;
+        backdrop-filter: blur(12px);
+    }
+    
+    /* 错误提示 */
+    .stError {
+        background: rgba(239, 68, 68, 0.1) !important;
+        border: 1px solid rgba(239, 68, 68, 0.2) !important;
+        border-radius: 12px !important;
+        backdrop-filter: blur(12px);
     }
     </style>
 """, unsafe_allow_html=True)
@@ -64,6 +345,10 @@ if 'records' not in st.session_state:
     st.session_state.records = []
 if 'setup_done' not in st.session_state:
     st.session_state.setup_done = False
+if 'is_reviewing' not in st.session_state:
+    st.session_state.is_reviewing = False
+if 'replay_counter' not in st.session_state:
+    st.session_state.replay_counter = 0
 
 # ==========================================
 # 3. 核心功能函数
@@ -87,7 +372,6 @@ def get_autoplay_audio_html(text):
     tts.write_to_fp(fp)
     b64 = base64.b64encode(fp.getvalue()).decode()
     
-    # 使用 HTML5 audio 标签，注入 base64 音频并开启 autoplay 与 controls
     audio_html = f'''
         <audio controls autoplay>
             <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
@@ -110,19 +394,34 @@ def reset_session():
     st.session_state.current_index = 0
     st.session_state.records = []
     st.session_state.setup_done = False
+    st.session_state.is_reviewing = False
+    st.session_state.replay_counter = 0
+    st.rerun()
+
+def go_to_previous():
+    """回退到上一个单词"""
+    if st.session_state.current_index > 0:
+        st.session_state.current_index -= 1
+        st.session_state.is_reviewing = True
+        st.session_state.replay_counter += 1
+        st.rerun()
+
+def replay_current():
+    """重播当前单词"""
+    st.session_state.replay_counter += 1
     st.rerun()
 
 # ==========================================
 # 4. 页面 UI 构建
 # ==========================================
 st.markdown("<h1>🎙️ 纯净听写记录仪</h1>", unsafe_allow_html=True)
-st.markdown("<div class='subtitle'>专注输入 • 自动播放 • Markdown 原生支持</div>", unsafe_allow_html=True)
+st.markdown("<div class='subtitle'>专注输入 • 自动播放 • 随时回听</div>", unsafe_allow_html=True)
 
 # ----------------- 视图 1：数据导入 -----------------
 if not st.session_state.setup_done:
+    st.markdown("<div class='glass-card'>", unsafe_allow_html=True)
     st.markdown("### 📥 导入听写词库")
     
-    # 使用 Tabs 优化界面，支持文件上传和纯文本粘贴
     tab1, tab2 = st.tabs(["📁 上传 .md 文件", "✍️ 粘贴 Markdown 表格"])
     
     parsed_data = None
@@ -154,6 +453,8 @@ if not st.session_state.setup_done:
             st.rerun()
         else:
             st.error("解析失败！请检查文件或内容中是否包含标准的 Markdown 表格（由 `|` 分隔）。")
+    
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # ----------------- 视图 2：听写进行中 -----------------
 elif st.session_state.current_index < len(st.session_state.vocab_list):
@@ -167,41 +468,120 @@ elif st.session_state.current_index < len(st.session_state.vocab_list):
         st.progress((curr) / total, text=f"当前进度: {curr + 1} / {total}")
     with col2:
         temp_md = generate_markdown_report()
-        st.download_button("💾 暂存当前进度", temp_md, file_name="听写暂存记录.md", use_container_width=True)
+        st.download_button("💾 暂存", temp_md, file_name="听写暂存记录.md", use_container_width=True)
 
     st.divider()
+    
+    # 回听模式提示条
+    if st.session_state.is_reviewing:
+        st.markdown(
+            f"<div class='review-banner'>🔍 你正在修改第 {curr + 1} 个单词，表单已预填充你之前的内容</div>", 
+            unsafe_allow_html=True
+        )
 
     # 音频播放区 (自动播放)
-    st.markdown("#### 🎧 正在听写...")
-    # 调用含有 autoplay 的 HTML 组件
+    st.markdown("<div class='audio-area'>", unsafe_allow_html=True)
+    st.markdown("<div class='audio-label'>🎧 正在听写...</div>", unsafe_allow_html=True)
+    
+    # 使用 replay_counter 确保每次重播都重新生成音频
     audio_html = get_autoplay_audio_html(current_word_data["word"])
     st.components.v1.html(audio_html, height=60)
+    st.markdown("</div>", unsafe_allow_html=True)
     
+    # 操作按钮组：重播 + 上一个
+    btn_col1, btn_col2, btn_col3 = st.columns([1, 1, 2])
+    with btn_col1:
+        st.markdown("<div class='btn-replay'>", unsafe_allow_html=True)
+        if st.button("🔁 重播", use_container_width=True, key="btn_replay"):
+            replay_current()
+        st.markdown("</div>", unsafe_allow_html=True)
+    
+    with btn_col2:
+        st.markdown("<div class='btn-back'>", unsafe_allow_html=True)
+        if st.button("⏮️ 上一个", use_container_width=True, key="btn_prev", 
+                     disabled=(curr == 0)):
+            go_to_previous()
+        st.markdown("</div>", unsafe_allow_html=True)
+    
+    with btn_col3:
+        pass  # 占位，保持布局平衡
+    
+    # 单词信息卡片
+    st.markdown("<div class='word-info'>", unsafe_allow_html=True)
+    st.markdown(f"<div class='word-display'>{current_word_data['word']}</div>", unsafe_allow_html=True)
+    st.markdown(f"<div class='meaning-display'>{current_word_data['meaning']}</div>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
+
     # 盲打输入表单
-    with st.form(key=f"dictation_form_{curr}", clear_on_submit=True):
-        c1, c2 = st.columns(2)
-        with c1:
-            user_w = st.text_input("📝 拼写记录 (Word)", autocomplete="off", placeholder="记录你听到的英文")
-        with c2:
-            user_m = st.text_input("💡 释义记录 (Meaning)", autocomplete="off", placeholder="记录该词的中文意思")
+    with st.container():
+        st.markdown("<div class='form-area'>", unsafe_allow_html=True)
         
-        st.markdown("<br>", unsafe_allow_html=True) # 增加一点空隙
-        submit_btn = st.form_submit_button("记录并进入下一个 ⏭️", use_container_width=True)
+        # 根据是否处于回听模式，预填充表单数据
+        default_word = ""
+        default_meaning = ""
         
-        if submit_btn:
-            st.session_state.records.append({
-                "std_word": current_word_data["word"],
-                "std_meaning": current_word_data["meaning"],
-                "user_word": user_w.strip() if user_w.strip() else "—",
-                "user_meaning": user_m.strip() if user_m.strip() else "—"
-            })
-            st.session_state.current_index += 1
-            st.rerun()
+        if st.session_state.is_reviewing and curr < len(st.session_state.records):
+            # 处于回听模式，预填充之前记录的内容
+            default_word = st.session_state.records[curr]["user_word"]
+            if default_word == "—":
+                default_word = ""
+            default_meaning = st.session_state.records[curr]["user_meaning"]
+            if default_meaning == "—":
+                default_meaning = ""
+        
+        with st.form(key=f"dictation_form_{curr}_{st.session_state.replay_counter}", clear_on_submit=True):
+            c1, c2 = st.columns(2)
+            with c1:
+                user_w = st.text_input("📝 拼写记录 (Word)", 
+                                       value=default_word,
+                                       autocomplete="off", 
+                                       placeholder="记录你听到的英文")
+            with c2:
+                user_m = st.text_input("💡 释义记录 (Meaning)", 
+                                       value=default_meaning,
+                                       autocomplete="off", 
+                                       placeholder="记录该词的中文意思")
+            
+            st.markdown("<br>", unsafe_allow_html=True)
+            
+            # 根据模式动态显示按钮文本
+            if st.session_state.is_reviewing:
+                submit_label = "📝 更新并继续 ⏭️"
+            else:
+                submit_label = "✅ 记录并进入下一个 ⏭️"
+            
+            submit_btn = st.form_submit_button(submit_label, use_container_width=True)
+            
+            if submit_btn:
+                # 准备记录数据
+                new_record = {
+                    "std_word": current_word_data["word"],
+                    "std_meaning": current_word_data["meaning"],
+                    "user_word": user_w.strip() if user_w.strip() else "—",
+                    "user_meaning": user_m.strip() if user_m.strip() else "—"
+                }
+                
+                if st.session_state.is_reviewing:
+                    # 回听模式：替换当前记录
+                    if curr < len(st.session_state.records):
+                        st.session_state.records[curr] = new_record
+                    else:
+                        st.session_state.records.append(new_record)
+                    st.session_state.is_reviewing = False
+                else:
+                    # 正常模式：追加新记录
+                    st.session_state.records.append(new_record)
+                
+                st.session_state.current_index += 1
+                st.rerun()
+        
+        st.markdown("</div>", unsafe_allow_html=True)
 
 # ----------------- 视图 3：听写完成与导出 -----------------
 else:
     st.balloons()
     
+    st.markdown("<div class='glass-card'>", unsafe_allow_html=True)
     st.success("🎉 今日听写记录完成！你的专注力很棒。")
     
     # 结果数据看板
@@ -221,7 +601,7 @@ else:
     c1, c2 = st.columns(2)
     with c1:
         st.download_button(
-            label="⬇️ 导出完整 Markdown 文件 (.md)",
+            label="⬇️ 导出 Markdown",
             data=final_md,
             file_name="今日听写对照记录.md",
             mime="text/markdown",
@@ -229,5 +609,7 @@ else:
             type="primary"
         )
     with c2:
-        if st.button("🔄 开启新一轮听写", use_container_width=True):
+        if st.button("🔄 开启新一轮", use_container_width=True):
             reset_session()
+    
+    st.markdown("</div>", unsafe_allow_html=True)
